@@ -10,7 +10,7 @@ server.on('listening', () => console.log('Listening.'));
 server.on('request', (request, response) => {
   if(request.url === '/') {
     response.end(readFileSync(htmlPath));
-    return
+    return;
   }
 });
 
