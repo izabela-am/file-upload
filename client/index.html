@@ -21,14 +21,14 @@
     uploadBtn.addEventListener('click', () => {
       const fileReader = new FileReader();
 
-      const file = file.files[0];
+      const uploadedFile = file.files[0];
 
       fileReader.onload = async (event) => {
         const chunkSize = 1000;
         const byteLength = event.target.result.byteLength;
         const chunkCount = byteLength / chunkSize;
 
-        const fileName = Math.random() * 1000 + file.name;
+        const fileName = Math.random() * 1000 + uploadedFile.name;
 
         for(let chunkId = 0; chunkId < chunkCount + 1; chunkId++) {
           const chunk = event.target.result.slice(chunkId * chunkSize, chunkId * chunkSize + chunkSize);
@@ -47,7 +47,7 @@
         console.log(byteLength);
       };
 
-      fileReader.readAsArrayBuffer(file);
+      fileReader.readAsArrayBuffer(uploadedFile);
     });
   </script>
 </body>
