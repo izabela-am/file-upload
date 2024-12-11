@@ -7,5 +7,48 @@
 </head>
 <body>
   <h1>File Upload</h1>
+  <input type="file" name="File" id="file">
+  <button id="btn">Read & Upload</button>
+  <div id="output">
+
+  </div>
+
+  <script>
+    const uploadBtn = document.getElementById('btn');
+    const output = document.getElementById('output');
+    const file = document.getElementById('file');
+
+    uploadBtn.addEventListener('click', () => {
+      const fileReader = new FileReader();
+
+      const file = file.files[0];
+
+      fileReader.onload = async (event) => {
+        const chunkSize = 1000;
+        const byteLength = event.target.result.byteLength;
+        const chunkCount = byteLength / chunkSize;
+
+        const fileName = Math.random() * 1000 + file.name;
+
+        for(let chunkId = 0; chunkId < chunkCount + 1; chunkId++) {
+          const chunk = event.target.result.slice(chunkId * chunkSize, chunkId * chunkSize + chunkSize);
+          await fetch('http://localhost:3333/upload', {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/octet-stream',
+              'content-length': chunk.length,
+              'file-name': fileName
+            },
+            body: chunk
+          });
+        }
+
+        console.log('Finished reading and uploading file.');
+        console.log(byteLength);
+      };
+
+      fileReader.readAsArrayBuffer(file);
+    });
+  </script>
 </body>
 </html>
