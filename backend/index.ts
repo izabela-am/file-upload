@@ -1,5 +1,5 @@
 import { createServer } from 'http';
-import { readFileSync } from 'fs';
+import { appendFileSync, readFileSync } from 'fs';
 import { join } from 'path';
 
 const server = createServer();
@@ -11,6 +11,16 @@ server.on('request', (request, response) => {
   if(request.url === '/') {
     response.end(readFileSync(htmlPath));
     return;
+  }
+
+  if(request.url === '/upload') {
+    const fileName = request.headers['file-name'];
+    request.on('data', (chunk) => {
+      appendFileSync(fileName as string, chunk);
+      console.log(`Chunk size: ${chunk.length}`);
+    });
+
+    response.end('File was uploaded successfully.');
   }
 });
 
