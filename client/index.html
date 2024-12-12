@@ -24,7 +24,7 @@
       const uploadedFile = file.files[0];
 
       fileReader.onload = async (event) => {
-        const chunkSize = 1000;
+        const chunkSize = 5000;
         const byteLength = event.target.result.byteLength;
         const chunkCount = byteLength / chunkSize;
 
@@ -41,6 +41,8 @@
             },
             body: chunk
           });
+
+          output.textContent = Math.round(chunkId / chunkCount * 100) + '%';
         }
 
         console.log('Finished reading and uploading file.');

@@ -4,7 +4,7 @@ import { join } from 'path';
 
 const server = createServer();
 
-const htmlPath = join(__dirname, '..', 'client', 'index.html')
+const htmlPath = join(__dirname, '..', 'client', 'index.html');
 
 server.on('listening', () => console.log('Listening.'));
 server.on('request', (request, response) => {
